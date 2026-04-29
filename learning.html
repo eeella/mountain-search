@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>學習中心 | 登山找一下 - 日系專業學習指南</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* =========================================
+           1. 核心設計規範 (日式大地時尚)
+           ========================================= */
+        :root {
+            --color-primary: #1F2622;    /* 深灰黑文字 */
+            --color-emerald: #2C4234;    /* 品牌墨綠 */
+            --color-brand-light: #B8DCEF; /* 探索藍 */
+            --color-secondary: #E8E3D9;  /* 燕麥沙色 */
+            --color-accent: #C26D4A;     /* 焦糖赤陶 */
+            --color-bg-base: #F5F3EC;    /* 暖柔白底 */
+            --color-bg-white: #FFFFFF;
+            --color-text-muted: #848A86; /* 輔助灰 */
+            --color-border: rgba(13, 18, 16, 0.1);
+            --transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --shadow-elegant: 0 40px 80px rgba(44, 66, 52, 0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'Noto Sans TC', sans-serif; 
+            color: var(--color-primary); 
+            line-height: 1.8; 
+            background-color: var(--color-bg-base);
+            overflow-x: hidden;
+            letter-spacing: 0.05em;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, .serif { font-family: 'Noto Serif TC', serif; }
+        a { text-decoration: none; color: inherit; cursor: pointer; display: block; }
+        ul { list-style: none; }
+        button { cursor: pointer; border: none; font-family: inherit; transition: 0.3s; }
+
+        /* 和紙微噪點濾鏡 */
+        .texture-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+        }
+
+        /* =========================================
+           2. 同步 Header (依據 image_94aa6d.jpg)
+           ========================================= */
+        header { 
+            position: fixed; width: 100%; top: 0; z-index: 1000; 
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--color-border);
+        }
+        .nav-inner { max-width: 1400px; margin: 0 auto; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.4rem; font-weight: 700; color: var(--color-emerald); letter-spacing: 0.1em; }
+        .nav-center { display: flex; gap: 40px; }
+        .nav-center a { font-size: 0.85rem; color: var(--color-text-muted); font-weight: 500; transition: 0.3s; }
+        .nav-center a:hover, .nav-center a.active { color: var(--color-primary); border-bottom: 2px solid var(--color-emerald); padding-bottom: 4px; }
+        .btn-login-outline { border: 1px solid #707070; padding: 8px 32px; font-size: 0.85rem; color: var(--color-primary); border-radius: 50px; background: transparent; }
+        .btn-login-outline:hover { background: var(--color-emerald); color: white; border-color: var(--color-emerald); }
+
+        /* =========================================
+           3. Top 裝飾圖
+           ========================================= */
+        .page-top-hero { height: 42vh; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; }
+        .hero-bg-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.65; filter: brightness(0.9); }
+        .hero-title-box { position: relative; z-index: 10; color: white; text-align: center; }
+        .hero-title-box h1 { font-size: 3.2rem; letter-spacing: 0.2em; margin-bottom: 10px; }
+
+        .container { max-width: 1240px; margin: 0 auto; padding: 0 40px; }
+
+        /* =========================================
+           4. 登山學堂 (依據 LaerningCenter.jpg)
+           ========================================= */
+        .acad-section { padding: 100px 0; border-bottom: 1px solid var(--color-border); }
+        .acad-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 50px; }
+        .acad-card { height: 420px; border-radius: 20px; overflow: hidden; position: relative; cursor: pointer; transition: 0.5s; }
+        .acad-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.7); transition: 1s; }
+        .acad-card:hover img { transform: scale(1.1); filter: brightness(0.85); }
+        .acad-card h3 { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); color: white; font-size: 2.2rem; letter-spacing: 0.1em; }
+
+        /* =========================================
+           5. 診斷小工具 (依據 LaerningCenter.jpg)
+           ========================================= */
+        .diag-section { padding: 120px 0; background: white; text-align: center; }
+        .diag-container { 
+            max-width: 900px; margin: 60px auto; background: #FBFBFA; padding: 80px 60px; 
+            border-radius: 24px; border: 1px solid var(--color-border); box-shadow: var(--shadow-elegant);
+            position: relative;
+        }
+        /* 進度指示器 */
+        .diag-steps { display: flex; justify-content: center; gap: 15px; margin-bottom: 50px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: #ddd; transition: 0.3s; }
+        .dot.active { background: var(--color-accent); transform: scale(1.4); }
+
+        .diag-question-box { text-align: left; }
+        .diag-q-title { font-size: 1.4rem; color: var(--color-emerald); margin-bottom: 35px; display: flex; gap: 15px; align-items: flex-start; }
+        .diag-q-title span { color: var(--color-accent); font-weight: 700; font-size: 1.1rem; }
+        
+        .diag-options { display: grid; gap: 15px; margin-bottom: 50px; }
+        .diag-opt { 
+            padding: 22px 30px; border: 1px solid var(--color-border); border-radius: 8px; 
+            background: white; cursor: pointer; transition: 0.3s; font-size: 1rem;
+            display: flex; align-items: center; gap: 15px;
+        }
+        .diag-opt:hover { border-color: var(--color-emerald); background: #f5f7f6; }
+        .diag-opt input { accent-color: var(--color-emerald); }
+
+        .diag-btns { display: flex; justify-content: center; gap: 20px; }
+        .btn-diag { padding: 15px 80px; border-radius: 50px; font-weight: 700; letter-spacing: 0.2em; font-size: 0.95rem; }
+        .btn-prev { border: 1px solid var(--color-primary); color: var(--color-primary); }
+        .btn-next { background: var(--color-emerald); color: white; }
+
+        /* =========================================
+           6. 行前自我檢查 (依據 LaerningCenter.jpg)
+           ========================================= */
+        .check-section { padding: 120px 0; background: #E9F1F1; }
+        .check-form { 
+            background: white; padding: 60px; max-width: 1100px; margin: 60px auto 0; 
+            border-radius: 16px; box-shadow: var(--shadow-elegant); 
+            display: flex; gap: 35px; align-items: flex-end;
+        }
+        .check-input { flex: 1; text-align: left; }
+        .check-input label { display: block; font-size: 0.85rem; font-weight: 700; color: var(--color-emerald); margin-bottom: 12px; }
+        .check-input select { width: 100%; padding: 16px; border: 1px solid #ddd; background: #fafafa; border-radius: 4px; outline: none; }
+        .btn-generate { background: var(--color-emerald); color: white; padding: 18px 60px; font-weight: 700; border-radius: 4px; }
+
+        /* =========================================
+           7. 經驗與社群 (圖配文輪播)
+           ========================================= */
+        .social-section { padding: 140px 0; background: white; text-align: center; }
+        .carousel-outer { position: relative; margin-top: 80px; }
+        .carousel-btn { 
+            position: absolute; top: 40%; transform: translateY(-50%); width: 54px; height: 54px; 
+            background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 50; transition: 0.3s;
+        }
+        .carousel-btn:hover { background: var(--color-emerald); color: white; }
+        .btn-l { left: -25px; }
+        .btn-r { right: -25px; }
+
+        .carousel-track { display: flex; gap: 30px; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none; padding: 20px; }
+        .carousel-track::-webkit-scrollbar { display: none; }
+
+        .social-card { flex: 0 0 380px; background: white; border: 1px solid var(--color-border); border-radius: 12px; overflow: hidden; transition: 0.4s; text-align: left; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
+        .social-card:hover { transform: translateY(-12px); border-color: var(--color-accent); }
+        
+        .social-img { height: 240px; overflow: hidden; }
+        .social-img img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .social-info { padding: 35px 30px; }
+        .social-info h4 { font-size: 1.3rem; margin-bottom: 15px; color: var(--color-primary); line-height: 1.4; }
+        .social-desc { font-size: 0.9rem; color: #666; line-height: 1.7; height: 50px; overflow: hidden; margin-bottom: 25px; }
+        
+        .user-meta { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f5f5f5; padding-top: 20px; }
+        .user-box { display: flex; align-items: center; gap: 12px; }
+        .avatar { width: 36px; height: 36px; border-radius: 50%; background: #E8E3D9; }
+        .rating { color: var(--color-accent); font-size: 0.85rem; letter-spacing: 2px; }
+
+        /* =========================================
+           8. 同步 Footer
+           ========================================= */
+        footer { background: white; padding: 140px 40px; border-top: 1px solid var(--color-border); }
+        .footer-grid { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 2.5fr 1fr 1fr 1fr 1fr; gap: 60px; }
+        .f-col h4 { font-family: 'Noto Serif TC'; color: var(--color-emerald); border-bottom: 1px solid var(--color-border); padding-bottom: 10px; margin-bottom: 30px; }
+        .f-col li { margin-bottom: 15px; font-size: 0.85rem; color: var(--color-text-muted); cursor: pointer; list-style: none; transition: 0.3s; }
+        .f-col li:hover { color: var(--color-emerald); }
+        .f-logo { font-size: 1.8rem; font-weight: 700; color: var(--color-emerald); margin-bottom: 20px; }
+
+        @media (max-width: 1024px) {
+            .acad-grid, .check-form, .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+            .social-card { flex: 0 0 320px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="texture-overlay"></div>
+
+    <header>
+        <div class="nav-inner">
+            <a href="index.html" class="logo serif">登山找一下</a>
+            <nav class="nav-center">
+                <a href="explore.html">探索申請區</a>
+                <a href="preparation.html">行前準備區</a>
+                <a href="learning.html">學習互動區</a>
+                <a href="login.html">會員申請區</a>
+            </nav>
+            <a href="login.html" class="btn-login-nav serif active">會員登入</a>
+        </div>
+    </header>
+
+    <!-- Top 裝飾圖 -->
+    <section class="page-top-hero">
+        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2000" class="hero-bg-img" alt="Learning Hero">
+        <div class="hero-title-box">
+            <h1 class="serif">登山學堂</h1>
+            <p>MOUNTAIN ACADEMY & COMMUNITY</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- 登山學堂分類 (依據 LaerningCenter.jpg) -->
+        <section class="acad-section">
+            <div class="section-title-wrapper">
+                <h2 class="serif" style="font-size: 2.4rem;">學習登山知識 · 從入門至進階</h2>
+            </div>
+            <div class="acad-grid">
+                <div class="acad-card">
+                    <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=800">
+                    <h3>入門</h3>
+                </div>
+                <div class="acad-card">
+                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800">
+                    <h3>進階</h3>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 診斷小工具 (依據 LaerningCenter.jpg 資料欄位) -->
+    <section class="diag-section">
+        <div class="container">
+            <h2 class="serif" style="font-size: 2.2rem;">想知道適合爬什麼山？</h2>
+            <p style="color: var(--color-accent); font-weight: 700; margin-top: 10px;">用下方診斷工具測出你的等級並直接產生專屬清單</p>
+            
+            <div class="diag-container">
+                <h2 class="serif" style="font-size: 1.8rem; margin-bottom: 20px;">登山診斷小工具</h2>
+                <div class="diag-steps">
+                    <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                </div>
+                
+                <div class="diag-question-box">
+                    <div class="diag-q-title">
+                        <span>●</span>
+                        <h3>您過去一年進行登山或健行的次數是？</h3>
+                    </div>
+                    <div class="diag-options">
+                        <label class="diag-opt"><input type="radio" name="q1"> 我是全新手</label>
+                        <label class="diag-opt"><input type="radio" name="q1"> 1-3 次，偶爾會跟朋友去爬</label>
+                        <label class="diag-opt"><input type="radio" name="q1"> 5 次以上，我有豐富登山經驗</label>
+                        <label class="diag-opt"><input type="radio" name="q1"> 幾乎每月都爬，我是登山愛好者</label>
+                    </div>
+
+                    <div class="diag-q-title">
+                        <span>●</span>
+                        <h3>您過去的登山經驗，主要路線屬於哪一類？</h3>
+                    </div>
+                    <div class="diag-options">
+                        <label class="diag-opt"><input type="radio" name="q2"> 平緩的親山步道（如大坑步道、象山）</label>
+                        <label class="diag-opt"><input type="radio" name="q2"> 中級山或稍具坡度的步道（如東滿步道、加里山）</label>
+                        <label class="diag-opt"><input type="radio" name="q2"> 兩天一夜的入門百岳（如玉山、合歡山）</label>
+                        <label class="diag-opt"><input type="radio" name="q2"> 完全沒有經驗</label>
+                    </div>
+                </div>
+
+                <div class="diag-btns">
+                    <button class="btn-diag btn-prev">上一步</button>
+                    <button class="btn-diag btn-next">下一步</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 行前自我檢查 (依據 LaerningCenter.jpg) -->
+    <section class="check-section">
+        <div class="container" style="text-align: center;">
+            <h2 class="serif" style="font-size: 2.2rem;">行前自我檢查</h2>
+            <p style="color: var(--color-emerald); font-weight: 700; margin-top: 10px;">助您萬無一失，掌握啟程所需</p>
+            
+            <div class="check-form">
+                <div class="check-input">
+                    <label>路線名稱 Route</label>
+                    <select><option>請輸入欲前往的路線</option></select>
+                </div>
+                <div class="check-input">
+                    <label>區域 Region</label>
+                    <select><option>請選擇區域</option></select>
+                </div>
+                <div class="check-input">
+                    <label>預計天數 Days</label>
+                    <select><option>1 天</option><option>2 天</option><option>3 天以上</option></select>
+                </div>
+                <button class="btn-generate">產生清單</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 社群分享 (圖配文輪播) -->
+    <section class="social-section">
+        <div class="container">
+            <h2 class="serif" style="font-size: 2.4rem;">登山經驗與社群</h2>
+            <p style="color: var(--color-accent); font-weight: 700; margin-top: 10px;">分享經驗 · 帶來成長與共好</p>
+            
+            <div class="carousel-outer">
+                <button class="carousel-btn btn-l" onclick="moveSlide('socialTrack', -410)">‹</button>
+                <button class="carousel-btn btn-r" onclick="moveSlide('socialTrack', 410)">›</button>
+                <div class="carousel-track" id="socialTrack">
+                    <!-- 心得 1 -->
+                    <div class="social-card">
+                        <div class="social-img"><img src="https://images.unsplash.com/photo-1522163182402-834f871fd851?q=80&w=500"></div>
+                        <div class="social-info">
+                            <h4>第一次鳶嘴山：岩稜上的極致挑戰</h4>
+                            <p class="social-desc">碎石稜線非常考驗體力與專注度，建議新手一定要有伴同行，並穿著抓地力強的鞋款...</p>
+                            <div class="user-meta">
+                                <div class="user-box">
+                                    <div class="avatar"></div>
+                                    <div><p style="font-weight: 700; font-size: 0.85rem;">Ean</p><p style="font-size: 0.7rem; color:#888;">2025/08/11</p></div>
+                                </div>
+                                <div class="rating">★★★★★</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 心得 2 -->
+                    <div class="social-card">
+                        <div class="social-img"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=500"></div>
+                        <div class="social-info">
+                            <h4>漫步雲端：雪山主峰壯麗晨曦</h4>
+                            <p class="social-desc">在黑森林的寂靜中前行，最終迎來圈谷的壯闊與主峰的日出，那一刻靈魂得到了洗滌...</p>
+                            <div class="user-meta">
+                                <div class="user-box">
+                                    <div class="avatar"></div>
+                                    <div><p style="font-weight: 700; font-size: 0.85rem;">Lily</p><p style="font-size: 0.7rem; color:#888;">2025/07/20</p></div>
+                                </div>
+                                <div class="rating">★★★★★</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 心得 3 -->
+                    <div class="social-card">
+                        <div class="social-img"><img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?q=80&w=500"></div>
+                        <div class="social-info">
+                            <h4>挑戰自我：馬崙山五星級松針步道</h4>
+                            <p class="social-desc">雖然海拔落差大，但整條步道鋪滿松針，腳感紮實，是谷關七雄中最優美的路線...</p>
+                            <div class="user-meta">
+                                <div class="user-box">
+                                    <div class="avatar"></div>
+                                    <div><p style="font-weight: 700; font-size: 0.85rem;">OMG</p><p style="font-size: 0.7rem; color:#888;">2025/04/01</p></div>
+                                </div>
+                                <div class="rating">★★★★☆</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-diag btn-prev" style="margin-top: 50px; border-radius: 4px; padding: 15px 60px;">查看更多經驗分享</button>
+        </div>
+    </section>
+
+    <!-- 同步 Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="f-col">
+                <div class="f-logo serif">登山找一下</div>
+                <p style="font-size: 0.8rem; color:#888; line-height: 2.2;">台北市松山路89巷17弄3號<br>02-1234-5678<br>mountain@email.com</p>
+            </div>
+            <div class="f-col"><h4>探索申請區</h4><ul><li>登山路線探索</li><li>我要申請</li></ul></div>
+            <div class="f-col"><h4>行前準備區</h4><ul><li>保險指南</li><li>裝備檢查清單</li></ul></div>
+            <div class="f-col"><h4>學習互動區</h4><ul><li>登山學堂</li><li>心得分享牆</li></ul></div>
+            <div class="f-col"><h4>會員專區</h4><ul><li>我的日誌</li><li>提醒設定</li></ul></div>
+        </div>
+        <div style="text-align: center; margin-top: 100px; font-size: 0.75rem; color:#bbb; letter-spacing: 0.25em;">© 2026 MOUNT LOOKUP. ALL RIGHTS RESERVED. LEAVE NO TRACE.</div>
+    </footer>
+
+    <script>
+        // 輪播滑動功能
+        function moveSlide(trackId, distance) {
+            const track = document.getElementById(trackId);
+            track.scrollBy({ left: distance, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員登入 | 登山找一下 - 時尚藝廊版</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* =========================================
+           1. 核心設計系統
+           ========================================= */
+        :root {
+            --color-primary: #1F2622;    /* 深灰黑文字 */
+            --color-emerald: #2C4234;    /* 品牌墨綠 */
+            --color-secondary: #5D5447;  /* 參考圖深咖色 */
+            --color-accent: #C26D4A;     /* 焦糖赤陶 */
+            --color-bg-form: #FFF9F1;    /* 參考圖暖奶油色 */
+            --color-bg-base: #F5F3EC;    
+            --color-border: rgba(0, 0, 0, 0.08);
+            --transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: 'Noto Sans TC', sans-serif; 
+            color: var(--color-primary); 
+            line-height: 1.6; 
+            background-color: var(--color-bg-base);
+            min-height: 100vh;
+            overflow-x: hidden;
+            letter-spacing: 0.06em;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, .serif { font-family: 'Noto Serif TC', serif; }
+        a { text-decoration: none; color: inherit; cursor: pointer; display: block; }
+        ul { list-style: none; }
+        button { cursor: pointer; border: none; font-family: inherit; transition: 0.3s; }
+
+        /* 和紙微噪點濾鏡 */
+        .texture-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+        }
+
+        /* =========================================
+           2. Header (同步風格)
+           ========================================= */
+        header { 
+            position: fixed; width: 100%; top: 0; z-index: 1000; 
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .nav-inner { max-width: 1400px; margin: 0 auto; padding: 16px 40px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.35rem; font-weight: 700; color: var(--color-emerald); letter-spacing: 0.15em; }
+        .nav-center { display: flex; gap: 40px; }
+        .nav-center a { font-size: 0.8rem; color: #848A86; font-weight: 500; transition: 0.3s; text-transform: uppercase; }
+        .nav-center a:hover, .nav-center a.active { color: var(--color-primary); border-bottom: 2px solid var(--color-emerald); padding-bottom: 4px; }
+        .btn-login-nav { border: 1px solid #707070; padding: 6px 26px; font-size: 0.75rem; border-radius: 50px; background: transparent; }
+
+        /* =========================================
+           3. 左右分割登入主容器 (參考 image_c7de7f.jpg)
+           ========================================= */
+        .login-viewport {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 20px 60px;
+        }
+
+        .login-card-combined {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            background: var(--color-bg-white);
+            border-radius: 40px; /* 大圓角設計 */
+            overflow: hidden;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.08);
+            border: 1px solid var(--color-border);
+            animation: cardSlideIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        @keyframes cardSlideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 左側：裝飾圖區塊 */
+        .login-image-side {
+            flex: 1.1;
+            background: #000;
+            position: relative;
+            overflow: hidden;
+        }
+        .login-image-side img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.85;
+            transition: 1.5s;
+        }
+        .login-card-combined:hover .login-image-side img { transform: scale(1.05); }
+
+        /* 右側：表單區塊 */
+        .login-form-side {
+            flex: 1;
+            background-color: var(--color-bg-form);
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .login-form-side h2 {
+            font-size: 2.2rem;
+            color: var(--color-secondary);
+            margin-bottom: 40px;
+            letter-spacing: 0.15em;
+        }
+
+        /* 欄位樣式修正 (精簡高度) */
+        .input-group {
+            text-align: left;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .input-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--color-secondary);
+        }
+        .input-group label span { color: #D74B4B; margin-left: 4px; }
+
+        .input-minimal {
+            width: 100%;
+            padding: 12px 15px; 
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            background: white;
+            transition: 0.3s;
+        }
+        .input-minimal:focus {
+            border-color: var(--color-secondary);
+        }
+
+        /* 欄位內的圖示 */
+        .field-icon {
+            position: absolute;
+            right: 15px;
+            bottom: 12px;
+            opacity: 0.3;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .forgot-link {
+            text-align: right;
+            margin-top: -10px;
+            margin-bottom: 30px;
+        }
+        .forgot-link a {
+            display: inline;
+            font-size: 0.8rem;
+            color: var(--color-secondary);
+            border-bottom: 1px solid rgba(93, 84, 71, 0.3);
+        }
+
+        .btn-login-main {
+            width: 100%;
+            padding: 15px; 
+            background: var(--color-secondary);
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 0.3em;
+            margin-bottom: 30px;
+            border-radius: 12px;
+        }
+        .btn-login-main:hover { background: var(--color-primary); }
+
+        /* 下方註冊與社群區塊 (整合版) */
+        .register-box-integrated {
+            background: white;
+            border-radius: 50px;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            margin-top: 10px;
+        }
+        .register-box-integrated p { font-size: 0.85rem; color: #888; }
+        .btn-join {
+            border: 1px solid #aaa;
+            padding: 5px 25px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .btn-join:hover { background: var(--color-primary); color: white; border-color: var(--color-primary); }
+
+        /* OpenID 區塊 */
+        .social-row {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .btn-social-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+        .btn-social-icon:hover { transform: translateY(-3px); border-color: var(--color-secondary); }
+        .btn-social-icon img { width: 18px; opacity: 0.8; }
+
+        /* 底部法規資訊 */
+        .login-notice {
+            max-width: 1000px;
+            margin: 40px auto 0;
+            color: #888;
+            font-size: 0.75rem;
+            line-height: 1.8;
+            text-align: left;
+            padding: 0 10px;
+        }
+        .login-notice h4 { color: var(--color-primary); margin-bottom: 8px; font-size: 0.85rem; }
+
+        /* =========================================
+           4. 同步 Footer
+           ========================================= */
+        footer { background: white; padding: 80px 40px; border-top: 1px solid var(--color-border); }
+        .footer-grid { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 2.5fr 1fr 1fr 1fr 1fr; gap: 60px; }
+        .f-logo { font-size: 1.4rem; font-weight: 700; color: var(--color-emerald); margin-bottom: 20px; }
+        .f-col h4 { font-family: 'Noto Serif TC'; color: var(--color-emerald); border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 20px; font-size: 0.9rem; }
+        .f-col li { margin-bottom: 10px; font-size: 0.75rem; color: #888; cursor: pointer; }
+
+        @media (max-width: 880px) {
+            .login-card-combined { flex-direction: column; border-radius: 20px; }
+            .login-image-side { height: 250px; }
+            .login-form-side { padding: 40px 25px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+            .register-box-integrated { flex-direction: column; border-radius: 15px; padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="texture-overlay"></div>
+
+    <!-- Header: 同步品牌視覺 -->
+    <header>
+        <div class="nav-inner">
+            <a href="index.html" class="logo serif">登山找一下</a>
+            <nav class="nav-center">
+                <a href="explore.html">探索路線</a>
+                <a href="preparation.html">裝備打包</a>
+                <a href="learning.html">學習互動</a>
+                <a href="#">行程管理</a>
+            </nav>
+            <a href="login.html" class="btn-login-nav serif active">登入</a>
+        </div>
+    </header>
+
+    <!-- 登入視窗區域 -->
+    <div class="login-viewport">
+        
+        <div style="width:100%; max-width:1000px;">
+            <!-- 左右分割卡片 (依據參考圖設計) -->
+            <div class="login-card-combined">
+                
+                <!-- 左側：裝飾大圖 -->
+                <div class="login-image-side">
+                    <!-- 使用具備氛圍感的登山裝飾圖 -->
+                    <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=1500" alt="Decoration Image">
+                </div>
+
+                <!-- 右側：奶油色登入表單 -->
+                <div class="login-form-side">
+                    <h2 class="serif">歡迎登入</h2>
+                    
+                    <form>
+                        <div class="input-group">
+                            <label>帳號 <span>*</span></label>
+                            <input type="text" class="input-minimal" placeholder="請輸入帳號" required>
+                            <div class="field-icon">▼</div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>密碼 <span>*</span></label>
+                            <input type="password" class="input-minimal" placeholder="請輸入密碼" required>
+                            <div class="field-icon">👁</div>
+                        </div>
+
+                        <div class="forgot-link">
+                            <a href="#">忘記密碼？</a>
+                        </div>
+
+                        <button type="submit" class="btn-login-main">會員登入</button>
+                    </form>
+
+                    <!-- 下方社群登入與註冊入口 -->
+                    <div class="social-row">
+                        <button class="btn-social-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google"></button>
+                        <button class="btn-social-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg" alt="LINE"></button>
+                    </div>
+
+                    <div class="register-box-integrated">
+                        <p>還不是會員嗎？</p>
+                        <a href="#" class="btn-join">手刀加入</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 底部相關問題區塊 -->
+            <div class="login-notice">
+                <h4 class="serif">會員相關問題</h4>
+                <ol>
+                    <li>登山找一下中各項服務，如：入山申請、課程報名、裝備檢查等，均需要登入會員後方可進行。</li>
+                    <li>您的個人資料均依相關規定加密保存，詳見「個人資料保護聲明」。</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="f-col">
+                <div class="f-logo serif">登山找一下</div>
+                <p style="font-size: 0.7rem; color:#888; line-height: 2;">台北市松山路89巷17弄3號<br>02-1234-5678<br>mountain@lookup.tw</p>
+            </div>
+            <div class="f-col"><h4>探索申請</h4><ul><li>熱門路線探索</li><li>我要申請隊長</li><li>行程計劃管理</li></ul></div>
+            <div class="f-col"><h4>行前準備</h4><ul><li>登山保險指南</li><li>專業裝備清單</li><li>技術工具清單</li></ul></div>
+            <div class="f-col"><h4>學習互動</h4><ul><li>登山基礎學堂</li><li>心得社群分享</li></ul></div>
+            <div class="f-col"><h4>會員專區</h4><ul><li>我的登山日誌</li><li>提醒設定</li></ul></div>
+        </div>
+        <div style="text-align: center; margin-top: 60px; font-size: 0.65rem; color:#ccc; letter-spacing: 0.25em;">© 2026 MOUNT LOOKUP. ALL RIGHTS RESERVED.</div>
+    </footer>
+</body>
+</html>
