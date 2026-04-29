@@ -1,0 +1,371 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap');
+
+/* 自定義 Tailwind 主題配置 */
+@theme {
+  /* 字體設定 */
+  --font-sans: "Noto Sans TC", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Noto Serif TC", serif;
+
+  /* 品牌色彩系統 */
+  --color-primary: #1B2B23;       /* 深森林綠 - 主要色 */
+  --color-primary-light: #3E5947; /* 淺森林綠 */
+  --color-secondary: #E8E3D9;     /* 暖灰色 - 次要色 */
+  --color-accent: #E87132;        /* 活力橘 - 強調色 */
+  --color-brand-sky: #E3F2FD;     /* 天空藍 */
+  --color-sunny: #FFF9F0;         /* 陽光黃 */
+  --color-bg-base: #F5F3EC;       /* 頁面底色 */
+  --color-bg-white: #FFFFFF;      /* 純白背景 */
+  --color-text-dark: #1A1C1B;     /* 深色文字 */
+  --color-text-muted: #88928D;    /* 輔助文字 */
+  --color-border: #E0DDD5;        /* 邊框顏色 */
+
+  /* 自定義陰影 */
+  --shadow-elegant: 0 30px 60px rgba(44, 66, 52, 0.06);
+  --shadow-overlap: 0 15px 35px rgba(0, 0, 0, 0.03);
+}
+
+/* 基礎樣式覆寫 */
+@layer base {
+  body {
+    @apply bg-bg-base text-text-dark font-sans antialiased;
+    letter-spacing: 0.04em;
+  }
+
+  h1, h2, h3, .serif-text {
+    @apply font-serif;
+  }
+}
+
+/* ===============================================================
+   首頁區塊模組 (Home Page Block Modules)
+   =============================================================== */
+
+@layer components {
+  /* --- 英雄區 (Hero Section) --- */
+  .hero-section {
+    @apply relative min-h-screen flex items-center justify-center bg-primary overflow-hidden pt-20;
+  }
+
+  .hero-bg {
+    @apply absolute inset-0 w-full h-full bg-cover bg-center saturate-[0.8] contrast-[1.1];
+    animation: ken-burns 20s ease-in-out infinite alternate;
+  }
+
+  .hero-overlay {
+    @apply absolute inset-0 w-full h-full bg-gradient-to-b from-black/60 via-black/20 to-black/60;
+  }
+
+  .hero-content {
+    @apply relative z-10 text-center w-full px-6 -mt-5;
+  }
+
+  .hero-title {
+    @apply text-5xl md:text-7xl font-semibold text-bg-base mb-4 tracking-[0.25em] drop-shadow-2xl uppercase font-serif;
+  }
+
+  .hero-subtitle {
+    @apply text-lg text-bg-base/90 tracking-[0.2em] font-normal mb-20 uppercase;
+  }
+
+  /* --- 搜尋框組件 (Search Bar) --- */
+  .search-container {
+    @apply max-w-[900px] mx-auto;
+  }
+
+  .search-box {
+    @apply flex flex-col md:flex-row bg-bg-base shadow-2xl items-stretch overflow-hidden border border-bg-base;
+  }
+
+  .search-field {
+    @apply flex-1 text-left p-6 md:p-8 border-b md:border-b-0 md:border-r border-border hover:bg-white transition-colors;
+  }
+
+  .search-label {
+    @apply block text-[0.75rem] text-accent mb-2 font-semibold tracking-[0.15em] uppercase;
+  }
+
+  .search-select {
+    @apply w-full border-none text-lg text-primary font-semibold bg-transparent cursor-pointer outline-none py-1 appearance-none;
+  }
+
+  .search-button {
+    @apply bg-primary text-white px-8 md:px-14 py-6 md:py-0 text-lg font-medium hover:bg-accent transition-all duration-500 tracking-[0.15em] uppercase flex items-center justify-center gap-2 disabled:opacity-70 whitespace-nowrap;
+  }
+
+  .quick-info-tag {
+    @apply text-bg-base text-[0.9rem] font-normal tracking-[0.15em] flex items-center gap-3 uppercase;
+  }
+
+  .quick-info-tag::before {
+    @apply content-[''] inline-block w-7 h-[1px] bg-accent;
+  }
+
+  /* --- 專屬探索區 (Editorial Feature) --- */
+  .editorial-section {
+    @apply py-40 bg-primary text-bg-base relative overflow-hidden;
+  }
+
+  .editorial-divider {
+    @apply absolute top-1/2 left-0 w-full h-[1px] bg-secondary/20 z-0;
+  }
+
+  .editorial-container {
+    @apply max-w-[1300px] mx-auto px-10 flex flex-col lg:flex-row items-center justify-between relative z-10 gap-20 lg:gap-0;
+  }
+
+  .editorial-badge-num {
+    @apply w-7 h-7 bg-secondary text-primary rounded-full flex items-center justify-center text-[0.8rem] font-serif font-semibold;
+  }
+
+  .editorial-badge-text {
+    @apply border border-secondary/30 px-4 py-1 rounded-full text-[0.8rem] text-secondary uppercase tracking-[0.15em] font-semibold;
+  }
+
+  .editorial-title {
+    @apply text-5xl md:text-[3.2rem] font-medium leading-[1.3] text-white tracking-wider font-serif;
+  }
+
+  .editorial-image-wrapper {
+    @apply w-[300px] md:w-[340px] h-[480px] md:h-[540px] rounded-[200px] overflow-hidden shadow-2xl relative transition-all duration-500 bg-primary-light;
+  }
+
+  .editorial-image {
+    @apply w-full h-full object-cover saturate-[0.8] contrast-[1.05] transition-transform duration-1000;
+  }
+
+  .editorial-desc {
+    @apply text-lg md:text-[1.15rem] text-bg-base/90 mb-8 leading-relaxed font-normal tracking-wide;
+  }
+
+  /* --- 準備步驟區 (Steps Section) --- */
+  .steps-section {
+    @apply py-40 bg-bg-base;
+  }
+
+  .steps-title {
+    @apply text-[2.8rem] font-medium text-text-dark mb-4 tracking-[0.15em] uppercase font-serif;
+  }
+
+  .steps-subtitle {
+    @apply text-accent text-base font-medium tracking-[0.15em] uppercase;
+  }
+
+  .step-card-wrapper {
+    @apply w-full max-w-[320px] h-[440px] mx-auto overflow-hidden relative rounded-[200px] shadow-lg transition-transform duration-500;
+  }
+
+  .step-card-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-emerald-950/95 via-emerald-950/40 to-transparent p-10 flex flex-col justify-end text-center;
+  }
+
+  .step-number {
+    @apply font-serif text-5xl font-medium text-secondary mb-4 tracking-[0.2em] uppercase;
+  }
+
+  .step-title {
+    @apply text-2xl font-medium text-white mb-2 tracking-wider font-serif;
+  }
+
+  /* --- 登山遊記區 (Journeys Section) --- */
+  .journeys-section {
+    @apply py-36 bg-white border-t border-border;
+  }
+
+  .journey-card {
+    @apply flex-1 rounded-[20px] overflow-hidden relative transition-all duration-700 cursor-pointer bg-primary shadow-xl;
+  }
+
+  .journey-card-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-emerald-950/95 via-emerald-950/60 to-transparent p-12 flex flex-col justify-end opacity-0 transition-all duration-500 delay-200;
+  }
+
+  /* --- 公告與指南區 (News Section) --- */
+  .news-section {
+    @apply bg-bg-base py-40 px-6 border-t border-border;
+  }
+
+  .notice-card {
+    @apply bg-white p-12 md:p-16 text-text-dark border border-border shadow-elegant;
+  }
+
+  .notice-tag {
+    @apply text-accent font-semibold text-[0.75rem] border border-accent px-4 py-1 uppercase tracking-widest;
+  }
+
+  /* --- 準備頁面區塊 (Preparation Page Blocks) --- */
+  .page-hero {
+    @apply h-[45vh] relative flex items-center justify-center overflow-hidden bg-black;
+  }
+
+  .page-hero-img {
+    @apply absolute inset-0 w-full h-full object-cover opacity-60 brightness-90;
+  }
+
+  .page-hero-content {
+    @apply relative z-10 text-white text-center;
+  }
+
+  .page-hero-title {
+    @apply text-5xl md:text-6xl font-serif tracking-[0.2em] mb-2;
+  }
+
+  .form-bar {
+    @apply bg-white p-8 md:p-12 -mt-16 mb-16 rounded-xl flex flex-col md:flex-row gap-8 shadow-elegant relative z-20 border border-border;
+  }
+
+  .form-field {
+    @apply flex-1;
+  }
+
+  .form-label {
+    @apply block text-[0.8rem] font-bold text-primary-light mb-3 uppercase;
+  }
+
+  .form-select {
+    @apply w-full p-4 border border-border bg-bg-base/50 rounded-md outline-none focus:border-primary transition-colors;
+  }
+
+  .generate-button {
+    @apply bg-primary text-white px-6 md:px-10 py-4 rounded-md font-bold hover:bg-accent transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 whitespace-nowrap;
+  }
+
+  .tab-nav {
+    @apply flex justify-center gap-4 md:gap-10 mb-20 border-b border-border;
+  }
+
+  .tab-item {
+    @apply px-4 md:px-8 pb-6 text-lg font-serif tracking-widest cursor-pointer transition-all duration-300 relative;
+  }
+
+  .content-section {
+    @apply py-20 border-t border-border;
+  }
+
+  /* --- 保險卡片 (Insurance Card) --- */
+  .insurance-card {
+    @apply bg-white border border-border transition-all duration-400 border-t-8 border-primary block;
+  }
+
+  .insurance-card-header {
+    @apply h-[180px] bg-bg-base/30 flex items-center justify-center p-0 overflow-hidden relative;
+  }
+
+  .insurance-card-body {
+    @apply p-10 border-t border-bg-base;
+  }
+
+  .insurance-badge {
+    @apply bg-primary/10 text-primary px-3 py-1 text-[0.75rem] rounded-sm inline-block mb-4 font-semibold;
+  }
+
+  .insurance-price {
+    @apply text-4xl font-bold mb-4;
+  }
+
+  /* --- 裝備卡片 (Equipment Card) --- */
+  .equipment-card {
+    @apply bg-white border border-border transition-all duration-400 border-t-8 border-primary block;
+  }
+
+  .equipment-card-img-wrapper {
+    @apply h-[200px] bg-bg-base/30 flex items-center justify-center p-0 overflow-hidden;
+  }
+
+  .equipment-card-body {
+    @apply p-10 border-t border-bg-base;
+  }
+
+  .equipment-tag {
+    @apply bg-primary/10 text-primary px-3 py-1 text-[0.75rem] rounded-sm inline-block mb-4 font-semibold;
+  }
+
+  /* --- 探索頁面區塊 (Explore Page Blocks) --- */
+  .explore-hero {
+    @apply relative min-h-[70vh] flex items-center pt-20 pb-20 md:pt-[100px] md:pb-[100px] overflow-hidden;
+  }
+
+  .explore-hero-bg {
+    @apply absolute inset-0 z-0;
+  }
+
+  .explore-hero-img {
+    @apply w-full h-full object-cover brightness-[0.75];
+  }
+
+  .search-panel {
+    @apply bg-white/95 backdrop-blur-md p-6 md:p-14 rounded-2xl shadow-2xl border border-white/20;
+  }
+
+  .search-panel-title {
+    @apply font-serif text-3xl md:text-[2.2rem] mb-10 text-primary font-bold tracking-widest border-l-[6px] border-accent pl-5;
+  }
+
+  .filter-group {
+    @apply relative;
+  }
+
+  .filter-label {
+    @apply block text-[0.75rem] font-extrabold text-primary uppercase tracking-[0.15em] opacity-50 mb-3;
+  }
+
+  .filter-select {
+    @apply w-full p-4 bg-bg-base/50 border border-border rounded-lg outline-none focus:border-primary transition-all font-medium appearance-none cursor-pointer;
+  }
+
+  .explore-button {
+    @apply w-full bg-primary text-white py-5 rounded-lg font-bold text-lg hover:bg-accent transition-all duration-300 shadow-lg flex items-center justify-center gap-3 disabled:opacity-70;
+  }
+
+  .filter-btn-group {
+    @apply flex gap-2.5 flex-wrap;
+  }
+
+  .filter-btn {
+    @apply px-5 py-2.5 border border-border rounded-full text-[0.85rem] font-medium transition-all duration-300;
+  }
+
+  .filter-btn-active {
+    @apply bg-primary text-white border-primary shadow-md;
+  }
+
+  .filter-btn-inactive {
+    @apply bg-white/50 text-text-muted hover:border-primary hover:text-primary;
+  }
+
+  .action-btn-primary {
+    @apply flex-1 bg-primary text-white py-4.5 rounded-xl font-extrabold text-[0.9rem] uppercase tracking-widest hover:bg-accent transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-primary/20;
+  }
+
+  .action-btn-outline {
+    @apply flex-1 border-2 border-primary text-primary py-4.5 rounded-xl font-extrabold text-[0.9rem] uppercase tracking-widest hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center;
+  }
+
+  /* --- 路線卡片 (Route Card) --- */
+  .route-card {
+    @apply bg-white rounded-2xl overflow-hidden shadow-elegant border border-border hover:-translate-y-2 transition-all duration-500;
+  }
+
+  .route-card-img-wrapper {
+    @apply relative h-[280px] overflow-hidden;
+  }
+
+  .route-card-img {
+    @apply w-full h-full object-cover transition-transform duration-700 group-hover:scale-110;
+  }
+
+  .route-card-body {
+    @apply p-8;
+  }
+
+  .route-tag {
+    @apply px-4 py-1 rounded-full text-[0.75rem] font-bold tracking-wider uppercase;
+  }
+}
+
+/* 動畫定義 */
+@keyframes ken-burns {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.1); }
+}
+
