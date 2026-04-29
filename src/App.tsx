@@ -31,7 +31,7 @@ function ScrollToTop() {
  */
 export default function App() {
   return (
-    <Router>
+    <Router basename="/mountain-search">
       {/* 確保每次換頁都回到頂部 */}
       <ScrollToTop />
       
