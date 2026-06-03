@@ -6,9 +6,10 @@ import {defineConfig, loadEnv} from 'vite';
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
   return {
+    base: '/mountain-search/',
     plugins: [react(), tailwindcss()],
     define: {
-      'process.env.AIzaSyCOrD7gPdGWZ24HDkcOV2xCFuC3y9qyrUc': JSON.stringify(env.AIzaSyCOrD7gPdGWZ24HDkcOV2xCFuC3y9qyrUc),
+      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
     },
     resolve: {
       alias: {
