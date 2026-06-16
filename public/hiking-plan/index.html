@@ -54,7 +54,9 @@
     font-size:38px;color:var(--caramel);margin:8px 0 18px;letter-spacing:4px;font-weight:900;line-height:1.4;}
   .cover .meta{color:var(--caramel-soft);font-size:15px;line-height:1.6;}
 
-  .section{margin:32px 0;}
+  .section{margin:72px 0;position:relative;}
+  /* 章節層級的「＋新增…」按鈕移到標題右邊 */
+  .section > .add-btn{position:absolute;top:-4px;right:0;margin-top:0;padding:8px 18px;font-size:16px;}
   .section-title{display:flex;align-items:center;gap:12px;font-size:23px;color:var(--caramel);
     font-weight:800;margin-bottom:14px;letter-spacing:2px;}
   .section-title::before{content:"";flex:0 0 auto;width:8px;height:24px;border-radius:4px;
@@ -96,10 +98,10 @@
   #memberList.cols-2{grid-template-columns:1fr 1fr;}   /* 四欄：兩人一列 */
   .person-row{display:grid;grid-template-columns:1fr 80px 36px;gap:10px;align-items:center;
     padding:8px 0;border-bottom:1px dashed var(--caramel-pale);}
-  .toggle-btn{margin-top:12px;margin-right:10px;background:#fff;color:var(--caramel);
-    border:1.5px solid var(--caramel);border-radius:24px;padding:9px 20px;
-    font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;}
-  .toggle-btn:hover{background:var(--caramel-pale);}
+  .toggle-btn{margin-top:12px;margin-right:10px;background:rgba(176,125,70,.12);color:var(--accent);
+    border:none;border-radius:24px;padding:5px 14px;
+    font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;}
+  .toggle-btn:hover{background:rgba(176,125,70,.22);color:var(--caramel);}
   .gender-btn{border:1.5px solid var(--caramel-pale);background:#fff;border-radius:20px;
     padding:4px 0;font-family:inherit;font-size:16px;color:var(--caramel);cursor:pointer;}
   .gender-btn:hover{border-color:var(--accent);}
@@ -120,6 +122,10 @@
 
   /* 路線重要資訊：主題群組 */
   .info-group{margin:18px 0;}
+  /* 細項層級的新增鍵：比主鍵小、但保留金棕色與淡底色 */
+  .info-group .add-btn{background:rgba(176,125,70,.12);color:var(--accent);border:none;box-shadow:none;
+    font-size:14px;font-weight:700;padding:5px 14px;margin-top:6px;}
+  .info-group .add-btn:hover{background:rgba(176,125,70,.22);color:var(--caramel);}
   .info-group .grp-head{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
   .info-group .grp-title{flex:1;font-weight:700;color:var(--caramel);font-size:18px;}
 
@@ -167,6 +173,7 @@
     .day{grid-template-columns:54px 1fr 30px;gap:8px;}
     .link-row{grid-template-columns:1fr 30px;gap:4px 8px;}
     .link-row .lk-url{grid-column:1 / 2;}
+    .section > .add-btn{position:static;margin-top:10px;}  /* 窄螢幕回到標題下方 */
   }
 
   /* ========== 列印 / 輸出 PDF ========== */
