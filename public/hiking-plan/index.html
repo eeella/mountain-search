@@ -84,7 +84,7 @@
 
   .row-del{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;
     border:1.5px solid #D9A99C;background:#FBEDE9;color:#A8442C;cursor:pointer;font-size:16px;line-height:1;
-    border-radius:50%;flex-shrink:0;transition:background .12s, color .12s;}
+    border-radius:50%;flex-shrink:0;align-self:center;transition:background .12s, color .12s;}
   .row-del:hover{background:#A8442C;color:#fff;border-color:#A8442C;}
 
   .add-btn{margin-top:12px;background:var(--caramel);color:#fff;border:none;
@@ -184,7 +184,7 @@
     .eval-row>*:nth-child(1)::before{content:"姓名／角色";}
     .eval-row>*:nth-child(2)::before{content:"病史";}
     .eval-row>*:nth-child(3)::before{content:"經驗與體能自我評估";}
-    .eval-row .row-del{position:absolute;top:10px;right:0;}
+    .eval-row .row-del{position:absolute;top:50%;right:0;transform:translateY(-50%);}
   }
 
   /* ========== 列印 / 輸出 PDF ========== */
