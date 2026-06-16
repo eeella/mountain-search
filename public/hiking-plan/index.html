@@ -16,7 +16,7 @@
   body{
     background:var(--cream); color:var(--ink);
     font-family:"PingFang TC","Microsoft JhengHei","Heiti TC","Noto Sans TC","Helvetica Neue",sans-serif;
-    font-size:18px; line-height:1.85; font-weight:400; -webkit-font-smoothing:antialiased;
+    font-size:16px; line-height:1.85; font-weight:400; -webkit-font-smoothing:antialiased;
   }
 
   /* ========== 頂部工具列 ========== */
@@ -117,6 +117,7 @@
   /* 逐日行程 */
   .day{display:grid;grid-template-columns:90px 1fr 36px;gap:12px;align-items:start;
     padding:11px 0;border-bottom:1px dashed var(--caramel-pale);}
+  .day .row-del{align-self:center;}
   .day .day-num{color:var(--accent);font-weight:700;white-space:nowrap;}
   .day .day-body .day-date{color:var(--caramel-soft);font-size:15px;margin-bottom:2px;}
 
@@ -155,13 +156,11 @@
     .page{margin:18px 12px;padding:38px 28px;}
     .cover h1{font-size:34px;letter-spacing:2px;}
     .field-row{grid-template-columns:108px 1fr;}
-    .eval-table{overflow-x:auto;}                 /* 表格過窄時可橫向捲動，不破版 */
-    .eval-head,.eval-row{min-width:480px;}
     #memberList.cols-2{grid-template-columns:1fr;} /* 四欄在窄螢幕自動收成單欄 */
   }
   /* 手機 */
   @media (max-width: 520px){
-    body{font-size:17px;}
+    body{font-size:16px;}
     .toolbar{gap:8px;padding:12px 14px;}
     .toolbar .brand{font-size:18px;width:100%;margin-bottom:4px;}
     .btn{font-size:16px;padding:10px 16px;}
@@ -174,6 +173,18 @@
     .link-row{grid-template-columns:1fr 30px;gap:4px 8px;}
     .link-row .lk-url{grid-column:1 / 2;}
     .section > .add-btn{position:static;margin-top:10px;}  /* 窄螢幕回到標題下方 */
+    /* 體能評估：直式逐欄列出，不橫向捲動 */
+    .eval-head{display:none;}
+    .eval-row{grid-template-columns:1fr;position:relative;
+      padding:0 0 22px;margin-bottom:24px;border-bottom:2px solid var(--caramel-pale);}
+    .eval-row>*{padding:6px 0 !important;border:none !important;}
+    .eval-row>*:nth-child(-n+3)::before{display:block;font-size:16px;font-weight:800;
+      color:var(--caramel);margin-bottom:6px;padding-bottom:6px;font-style:normal;letter-spacing:.5px;
+      border-bottom:1px solid var(--caramel-pale);}
+    .eval-row>*:nth-child(1)::before{content:"姓名／角色";}
+    .eval-row>*:nth-child(2)::before{content:"病史";}
+    .eval-row>*:nth-child(3)::before{content:"經驗與體能自我評估";}
+    .eval-row .row-del{position:absolute;top:10px;right:0;}
   }
 
   /* ========== 列印 / 輸出 PDF ========== */
@@ -258,8 +269,8 @@
       <div class="eval-table">
         <div class="eval-head"><div>姓名／角色</div><div>病史</div><div>經驗與體能自我評估</div><div></div></div>
         <div id="evalList">
-          <div class="eval-row"><div contenteditable="true" data-ph="領隊：姓名">領隊：王美麗</div><div contenteditable="true" data-ph="無／高血壓…">無</div><div contenteditable="true" data-ph="例：百岳完成、近期里程">國內經驗：百岳完成</div><button class="row-del" onclick="delParent(this,'.eval-row')">✕</button></div>
-          <div class="eval-row"><div contenteditable="true" data-ph="隊員：姓名">隊員：李秀英</div><div contenteditable="true">無</div><div contenteditable="true">國內經驗：百岳完成</div><button class="row-del" onclick="delParent(this,'.eval-row')">✕</button></div>
+          <div class="eval-row"><div contenteditable="true" data-ph="領隊：姓名">領隊：王美麗</div><div contenteditable="true" data-ph="無／高血壓…">高血壓（已控制）</div><div contenteditable="true" data-ph="例：百岳完成、近期里程">國外經驗：ABC、EBC<br>國內經驗：百岳完成、雪山主東縱走</div><button class="row-del" onclick="delParent(this,'.eval-row')">✕</button></div>
+          <div class="eval-row"><div contenteditable="true" data-ph="隊員：姓名">隊員：李秀英</div><div contenteditable="true">無</div><div contenteditable="true">國內經驗：玉山主峰、嘉明湖、合歡群峰</div><button class="row-del" onclick="delParent(this,'.eval-row')">✕</button></div>
         </div>
       </div>
       <button class="add-btn" onclick="addEval()">＋ 新增人員</button>
