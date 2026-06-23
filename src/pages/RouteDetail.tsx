@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { MapPin, Calendar, Clock, Mountain, ArrowLeft, ExternalLink, CheckCircle2, Wind, Droplets, Sun, CloudRain, Cloud, AlertTriangle, Newspaper, Download } from 'lucide-react';
+import { MapPin, Calendar, Clock, Mountain, ArrowLeft, ExternalLink, CheckCircle2, Wind, Droplets, Sun, CloudRain, Cloud, AlertTriangle, Newspaper, Download, FileText } from 'lucide-react';
 import { routesData } from '../constants/routes';
 import { MountainService } from '../services/mountainService';
 import { cn } from '@/src/lib/utils';
@@ -325,6 +325,27 @@ export default function RouteDetail() {
                 </li>
               ))}
             </ul>
+
+            {/* 線上撰寫登山計畫書（內建工具，新分頁開啟 public/hiking-plan） */}
+            <a
+              href={`${import.meta.env.BASE_URL}hiking-plan/`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block mb-4 rounded-lg border border-accent/30 bg-accent/5 p-4 hover:bg-accent/10 transition-colors"
+            >
+              <div className="flex items-start gap-3">
+                <FileText size={20} className="text-accent mt-0.5 flex-none" />
+                <div className="flex-1">
+                  <p className="text-sm font-bold text-primary group-hover:text-accent transition-colors flex items-center gap-1.5">
+                    線上撰寫登山計畫書 <ExternalLink size={12} className="opacity-60" />
+                  </p>
+                  <p className="text-xs text-text-muted mt-1 leading-relaxed">
+                    填寫行程、隊員與緊急聯絡資訊，可直接列印或匯出，作為入山／入園申請附件。
+                  </p>
+                </div>
+              </div>
+            </a>
+
             <a
               href="https://hike.taiwan.gov.tw/"
               target="_blank"
