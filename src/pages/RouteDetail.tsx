@@ -190,24 +190,10 @@ export default function RouteDetail() {
             </div>
           </div>
 
-          {/* 登山計畫書：由「建議行程」標題旁按鈕切換，展開時就地顯示（標題列參考「專屬裝備清單」精簡呈現） */}
+          {/* 登山計畫書：由「建議行程」標題旁按鈕切換。展開時直接顯示工具本體，
+              其自身的深色工具列即為唯一標頭（書名／檔案大小／按鈕／操作說明全在同一條） */}
           {showPlan && (
             <div className="rounded-2xl overflow-hidden">
-              {/* 深綠標題列（精簡：書名弱化 + 一行說明 + 收合） */}
-              <div className="bg-primary px-6 md:px-8 py-4 text-white flex items-center justify-between flex-wrap gap-3">
-                <div className="flex items-center gap-2.5">
-                  <FileText size={18} className="text-accent flex-none" />
-                  <h3 className="text-base font-bold tracking-wide">登山計畫書</h3>
-                  <span className="text-white/40 text-[0.7rem] tracking-widest uppercase hidden sm:inline border-l border-white/15 pl-2.5">填寫後可輸出 PDF · 申請附件</span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setShowPlan(false)}
-                  className="flex-none inline-flex items-center gap-1.5 text-[0.7rem] font-bold tracking-widest uppercase text-white/60 hover:text-accent transition-colors"
-                >
-                  收合 <ChevronDown size={14} className="rotate-180" />
-                </button>
-              </div>
               <iframe
                 ref={planIframeRef}
                 onLoad={handlePlanLoad}

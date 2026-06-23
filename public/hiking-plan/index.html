@@ -27,8 +27,10 @@
     box-shadow:0 2px 12px rgba(61,46,32,.18);
   }
   .toolbar .brand{font-size:20px;font-weight:700;letter-spacing:2px;margin-right:auto;display:flex;align-items:center;gap:10px;}
-  .btn{font-family:inherit;font-size:13.5px;border:none;border-radius:20px;padding:6px 15px;cursor:pointer;
-    display:inline-flex;align-items:center;gap:6px;transition:transform .08s, box-shadow .15s, background .15s;}
+  /* 書名：弱化、置左並把其餘控制推到右側 */
+  .toolbar .tb-title{font-size:13px;font-weight:600;letter-spacing:2px;color:rgba(255,255,255,.66);margin-right:auto;}
+  .btn{font-family:inherit;font-size:12px;border:none;border-radius:16px;padding:4px 12px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:5px;transition:transform .08s, box-shadow .15s, background .15s;}
   .btn:active{transform:translateY(1px);}
   .btn-main{background:#fff;color:var(--caramel);font-weight:700;box-shadow:0 1px 5px rgba(0,0,0,.2);}
   .btn-main:hover{background:#FFFDF8;box-shadow:0 3px 10px rgba(0,0,0,.26);}
@@ -217,7 +219,8 @@
 <body>
 
   <div class="toolbar">
-    <span class="size-badge small" id="sizeBadge" style="margin-right:auto;">預估 PDF：—</span>
+    <span class="tb-title">登山計畫書</span>
+    <span class="size-badge small" id="sizeBadge">預估 PDF：—</span>
     <button class="btn btn-ghost" onclick="resetAll()">🗑 清空重來</button>
     <button class="btn btn-main" onclick="exportPDF()">📄 輸出 PDF</button>
     <span class="saved-tip" id="savedTip" style="display:none;">已自動儲存</span>
