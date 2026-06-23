@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { MapPin, Calendar, Clock, Mountain, ArrowLeft, ExternalLink, CheckCircle2, Wind, Droplets, Sun, CloudRain, Cloud, AlertTriangle, Newspaper, Download, FileText } from 'lucide-react';
 import { routesData } from '../constants/routes';
@@ -14,7 +14,41 @@ export default function RouteDetail() {
   const [weather, setWeather] = useState<any>(null);
   const [status, setStatus] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  
+
+  // 登山計畫書內嵌區塊：就地展開，並依 iframe 內容自動撐高（與本站同源）
+  const [showPlan, setShowPlan] = useState(false);
+  const [planHeight, setPlanHeight] = useState(1400);
+  const planIframeRef = useRef<HTMLIFrameElement>(null);
+  const planRoRef = useRef<ResizeObserver | null>(null);
+
+  const syncPlanHeight = () => {
+    try {
+      const doc = planIframeRef.current?.contentDocument;
+      if (doc) setPlanHeight(doc.documentElement.scrollHeight);
+    } catch { /* 跨來源時略過 */ }
+  };
+
+  const handlePlanLoad = () => {
+    syncPlanHeight();
+    try {
+      const body = planIframeRef.current?.contentDocument?.body;
+      if (body && 'ResizeObserver' in window) {
+        planRoRef.current?.disconnect();
+        planRoRef.current = new ResizeObserver(syncPlanHeight);
+        planRoRef.current.observe(body);
+      }
+    } catch { /* ignore */ }
+  };
+
+  const openPlan = () => {
+    setShowPlan(true);
+    setTimeout(() => {
+      document.getElementById('hiking-plan-embed')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+  };
+
+  useEffect(() => () => planRoRef.current?.disconnect(), []);
+
   // 根據 ID 尋找對應路線資料
   const route = routesData.find(r => r.id === id);
 
@@ -326,10 +360,11 @@ export default function RouteDetail() {
               ))}
             </ul>
 
-            {/* 線上撰寫登山計畫書（站內頁面，沿用 Header / Footer） */}
-            <Link
-              to="/hiking-plan"
-              className="group block mb-4 rounded-lg border border-accent/30 bg-accent/5 p-4 hover:bg-accent/10 transition-colors"
+            {/* 線上撰寫登山計畫書：就地展開頁面內嵌區塊 */}
+            <button
+              type="button"
+              onClick={openPlan}
+              className="group block w-full text-left mb-4 rounded-lg border border-accent/30 bg-accent/5 p-4 hover:bg-accent/10 transition-colors"
             >
               <div className="flex items-start gap-3">
                 <FileText size={20} className="text-accent mt-0.5 flex-none" />
@@ -342,7 +377,7 @@ export default function RouteDetail() {
                   </p>
                 </div>
               </div>
-            </Link>
+            </button>
 
             <a
               href="https://hike.taiwan.gov.tw/"
@@ -450,6 +485,44 @@ export default function RouteDetail() {
             )}
           </div>
         </div>
+      </section>
+
+      {/* 登山計畫書內嵌區塊：由「入山申請資訊」就地展開，屬本頁內容的一部分 */}
+      <section id="hiking-plan-embed" className="scroll-mt-24">
+        {showPlan && (
+          <div className="bg-bg-base border-t border-border">
+            <div className="max-w-[1240px] mx-auto px-8 py-16">
+              <div className="flex items-center justify-between gap-4 mb-6">
+                <div className="flex items-center gap-3">
+                  <span className="w-11 h-11 rounded-xl bg-accent/15 flex items-center justify-center flex-none">
+                    <FileText size={22} className="text-accent" />
+                  </span>
+                  <div>
+                    <h3 className="font-serif text-2xl md:text-3xl font-bold text-primary tracking-tight">登山計畫書</h3>
+                    <p className="text-text-muted text-sm mt-0.5">線上填寫後可直接列印或輸出 PDF，作為入山／入園申請附件。</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowPlan(false)}
+                  className="flex-none text-xs font-bold tracking-widest uppercase text-text-muted hover:text-accent border border-border hover:border-accent rounded-md px-4 py-2 transition-colors"
+                >
+                  收合 ✕
+                </button>
+              </div>
+              <div className="rounded-2xl overflow-hidden border border-border shadow-sm bg-white">
+                <iframe
+                  ref={planIframeRef}
+                  onLoad={handlePlanLoad}
+                  src={`${import.meta.env.BASE_URL}hiking-plan/index.html`}
+                  title="登山計畫書"
+                  className="w-full block border-0"
+                  style={{ height: planHeight }}
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </section>
     </div>
   );
