@@ -217,11 +217,10 @@
 <body>
 
   <div class="toolbar">
-    <div class="brand">⛰ 登山計畫書</div>
+    <span class="size-badge small" id="sizeBadge" style="margin-right:auto;">預估 PDF：—</span>
     <button class="btn btn-ghost" onclick="resetAll()">🗑 清空重來</button>
     <button class="btn btn-main" onclick="exportPDF()">📄 輸出 PDF</button>
-    <span class="size-badge small" id="sizeBadge">預估 PDF：—</span>
-    <span class="saved-tip" id="savedTip">已自動儲存</span>
+    <span class="saved-tip" id="savedTip" style="display:none;">已自動儲存</span>
   </div>
 
   <div class="hint">
