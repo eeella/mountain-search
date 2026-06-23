@@ -27,22 +27,22 @@
     box-shadow:0 2px 12px rgba(61,46,32,.18);
   }
   .toolbar .brand{font-size:20px;font-weight:700;letter-spacing:2px;margin-right:auto;display:flex;align-items:center;gap:10px;}
-  .btn{font-family:inherit;font-size:17px;border:none;border-radius:30px;padding:11px 22px;cursor:pointer;
-    display:inline-flex;align-items:center;gap:8px;transition:transform .08s, box-shadow .15s, background .15s;}
+  .btn{font-family:inherit;font-size:13.5px;border:none;border-radius:20px;padding:6px 15px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:6px;transition:transform .08s, box-shadow .15s, background .15s;}
   .btn:active{transform:translateY(1px);}
-  .btn-main{background:#fff;color:var(--caramel);font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,.25);}
-  .btn-main:hover{background:#FFFDF8;box-shadow:0 4px 16px rgba(0,0,0,.32);}
-  .btn-ghost{background:var(--caramel-pale);color:var(--caramel);font-weight:700;border:none;box-shadow:0 1px 4px rgba(0,0,0,.22);}
-  .btn-ghost:hover{background:#D5D2C8;}
+  .btn-main{background:#fff;color:var(--caramel);font-weight:700;box-shadow:0 1px 5px rgba(0,0,0,.2);}
+  .btn-main:hover{background:#FFFDF8;box-shadow:0 3px 10px rgba(0,0,0,.26);}
+  .btn-ghost{background:rgba(255,255,255,.14);color:var(--cream);font-weight:600;border:none;box-shadow:none;}
+  .btn-ghost:hover{background:rgba(255,255,255,.24);}
   .saved-tip{font-size:14px;opacity:.85;min-width:96px;text-align:right;}
-  .size-badge{font-size:14px;padding:5px 12px;border-radius:16px;background:rgba(255,255,255,.16);white-space:nowrap;}
-  .size-badge.ok{background:#5E7B4E;}      /* 2–5MB：合格綠 */
-  .size-badge.over{background:#9B4A33;}    /* >5MB：超出紅 */
-  .size-badge.small{background:rgba(255,255,255,.16);} /* <2MB：偏小 */
-
-  .hint{background:var(--cream-soft);border-bottom:1px solid var(--caramel-pale);
-    color:var(--caramel-soft);text-align:center;font-size:15px;padding:10px 16px;}
-  .hint b{color:var(--caramel);}
+  /* 檔案大小：弱化為低調標記 */
+  .size-badge{font-size:11.5px;padding:3px 9px;border-radius:12px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.55);white-space:nowrap;font-weight:500;}
+  .size-badge.ok{background:rgba(94,123,78,.85);color:#fff;}      /* 2–5MB：合格綠 */
+  .size-badge.over{background:rgba(155,74,51,.9);color:#fff;}     /* >5MB：超出紅 */
+  .size-badge.small{background:rgba(255,255,255,.1);}             /* <2MB：偏小 */
+  /* 說明文字併入深色工具列（整列） */
+  .toolbar-hint{flex-basis:100%;width:100%;font-size:12px;line-height:1.6;color:rgba(255,255,255,.62);letter-spacing:.3px;}
+  .toolbar-hint b{color:#fff;font-weight:600;}
 
   /* ========== 文件本體 ========== */
   .page{background:var(--cream-soft);max-width:840px;margin:28px auto;padding:60px 66px;
@@ -221,10 +221,9 @@
     <button class="btn btn-ghost" onclick="resetAll()">🗑 清空重來</button>
     <button class="btn btn-main" onclick="exportPDF()">📄 輸出 PDF</button>
     <span class="saved-tip" id="savedTip" style="display:none;">已自動儲存</span>
-  </div>
-
-  <div class="hint">
-    操作方式：<b>用滑鼠點任何文字就能直接修改</b>；清單可「＋新增」「✕刪除」。改完按右上角「<b>輸出 PDF</b>」。內容會自動保存在這台電腦。
+    <div class="toolbar-hint">
+      <b>用滑鼠點任何文字即可直接修改</b>；清單可「＋新增」「✕刪除」，改完按「輸出 PDF」，內容會自動保存在這台電腦。
+    </div>
   </div>
 
   <input type="file" id="imgInput" accept="image/*" style="display:none" onchange="onPickImage(this)">

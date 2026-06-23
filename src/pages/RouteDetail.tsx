@@ -193,14 +193,12 @@ export default function RouteDetail() {
           {/* 登山計畫書：由「建議行程」標題旁按鈕切換，展開時就地顯示（標題列參考「專屬裝備清單」精簡呈現） */}
           {showPlan && (
             <div className="rounded-2xl overflow-hidden">
-              {/* 深綠標題列（精簡版：標題 + 一行說明 + 收合） */}
-              <div className="bg-primary px-6 md:px-8 py-5 text-white flex items-center justify-between flex-wrap gap-3">
-                <div className="flex items-center gap-3">
-                  <FileText size={24} className="text-accent flex-none" />
-                  <div>
-                    <h3 className="text-2xl md:text-3xl font-serif font-bold leading-tight">登山計畫書</h3>
-                    <p className="text-white/50 text-[0.7rem] tracking-widest uppercase mt-0.5">填寫後可輸出 PDF · 入山／入園申請附件</p>
-                  </div>
+              {/* 深綠標題列（精簡：書名弱化 + 一行說明 + 收合） */}
+              <div className="bg-primary px-6 md:px-8 py-4 text-white flex items-center justify-between flex-wrap gap-3">
+                <div className="flex items-center gap-2.5">
+                  <FileText size={18} className="text-accent flex-none" />
+                  <h3 className="text-base font-bold tracking-wide">登山計畫書</h3>
+                  <span className="text-white/40 text-[0.7rem] tracking-widest uppercase hidden sm:inline border-l border-white/15 pl-2.5">填寫後可輸出 PDF · 申請附件</span>
                 </div>
                 <button
                   type="button"
