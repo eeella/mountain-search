@@ -40,14 +40,22 @@ export default function RouteDetail() {
     } catch { /* ignore */ }
   };
 
-  const openPlan = () => {
-    setShowPlan(true);
-    setTimeout(() => {
-      document.getElementById('hiking-plan-embed')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 80);
-  };
+  const openPlan = () => setShowPlan(true);
 
   useEffect(() => () => planRoRef.current?.disconnect(), []);
+
+  // 彈窗開啟時鎖住背景捲動，並支援 Esc 關閉
+  useEffect(() => {
+    if (!showPlan) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setShowPlan(false); };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [showPlan]);
 
   // 根據 ID 尋找對應路線資料
   const route = routesData.find(r => r.id === id);
@@ -487,43 +495,52 @@ export default function RouteDetail() {
         </div>
       </section>
 
-      {/* 登山計畫書內嵌區塊：由「入山申請資訊」就地展開，屬本頁內容的一部分 */}
-      <section id="hiking-plan-embed" className="scroll-mt-24">
-        {showPlan && (
-          <div className="bg-bg-base border-t border-border">
-            <div className="max-w-[1240px] mx-auto px-8 py-16">
-              <div className="flex items-center justify-between gap-4 mb-6">
-                <div className="flex items-center gap-3">
-                  <span className="w-11 h-11 rounded-xl bg-accent/15 flex items-center justify-center flex-none">
-                    <FileText size={22} className="text-accent" />
-                  </span>
-                  <div>
-                    <h3 className="font-serif text-2xl md:text-3xl font-bold text-primary tracking-tight">登山計畫書</h3>
-                    <p className="text-text-muted text-sm mt-0.5">線上填寫後可直接列印或輸出 PDF，作為入山／入園申請附件。</p>
-                  </div>
+      {/* 登山計畫書：以彈窗（覆蓋層）開啟，不增加頁面長度、不需捲到底 */}
+      {showPlan && (
+        <div
+          className="fixed inset-0 z-[2000] flex items-start justify-center p-4 md:p-8 bg-primary/40 backdrop-blur-sm"
+          onClick={() => setShowPlan(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="登山計畫書"
+        >
+          <div
+            className="bg-white w-full max-w-[960px] max-h-[92vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* 彈窗標題列 */}
+            <div className="flex items-center justify-between gap-4 px-6 py-4 border-b border-border flex-none">
+              <div className="flex items-center gap-3">
+                <span className="w-10 h-10 rounded-xl bg-accent/15 flex items-center justify-center flex-none">
+                  <FileText size={20} className="text-accent" />
+                </span>
+                <div>
+                  <h3 className="font-serif text-xl md:text-2xl font-bold text-primary tracking-tight leading-tight">登山計畫書</h3>
+                  <p className="text-text-muted text-xs mt-0.5">填寫後可直接列印或輸出 PDF，作為入山／入園申請附件。</p>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setShowPlan(false)}
-                  className="flex-none text-xs font-bold tracking-widest uppercase text-text-muted hover:text-accent border border-border hover:border-accent rounded-md px-4 py-2 transition-colors"
-                >
-                  收合 ✕
-                </button>
               </div>
-              <div className="rounded-2xl overflow-hidden border border-border shadow-sm bg-white">
-                <iframe
-                  ref={planIframeRef}
-                  onLoad={handlePlanLoad}
-                  src={`${import.meta.env.BASE_URL}hiking-plan/index.html`}
-                  title="登山計畫書"
-                  className="w-full block border-0"
-                  style={{ height: planHeight }}
-                />
-              </div>
+              <button
+                type="button"
+                onClick={() => setShowPlan(false)}
+                className="flex-none text-xs font-bold tracking-widest uppercase text-text-muted hover:text-accent border border-border hover:border-accent rounded-md px-4 py-2 transition-colors"
+              >
+                關閉 ✕
+              </button>
+            </div>
+            {/* 彈窗內容：iframe 同源自動撐高，超出時於此區捲動 */}
+            <div className="flex-1 overflow-y-auto bg-bg-base">
+              <iframe
+                ref={planIframeRef}
+                onLoad={handlePlanLoad}
+                src={`${import.meta.env.BASE_URL}hiking-plan/index.html`}
+                title="登山計畫書"
+                className="w-full block border-0"
+                style={{ height: planHeight }}
+              />
             </div>
           </div>
-        )}
-      </section>
+        </div>
+      )}
     </div>
   );
 }
