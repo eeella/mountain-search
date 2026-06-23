@@ -15,6 +15,7 @@ import Login from './pages/Login';
 import RouteDetail from './pages/RouteDetail';
 import WeatherQuery from './pages/WeatherQuery';
 import PeaksMap from './pages/PeaksMap';
+import HikingPlan from './pages/HikingPlan';
 
 /**
  * 頁面跳轉時自動滾動回頂部的組件
@@ -70,6 +71,9 @@ export default function App() {
 
             {/* 百岳互動地圖 */}
             <Route path="/peaks-map" element={<PeaksMap />} />
+
+            {/* 登山計畫書（內嵌工具，沿用站台 Header / Footer） */}
+            <Route path="/hiking-plan" element={<HikingPlan />} />
             
             {/* 行程管理（目前導向首頁作為預留） */}
             <Route path="/management" element={<Home />} />
