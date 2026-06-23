@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
-import { MapPin, Calendar, Clock, Mountain, ArrowLeft, ExternalLink, CheckCircle2, Wind, Droplets, Sun, CloudRain, Cloud, AlertTriangle, Newspaper, Download, FileText } from 'lucide-react';
+import { MapPin, Calendar, Clock, Mountain, ArrowLeft, ArrowRight, ExternalLink, CheckCircle2, Wind, Droplets, Sun, CloudRain, Cloud, Download, FileText } from 'lucide-react';
 import { routesData } from '../constants/routes';
 import { MountainService } from '../services/mountainService';
 import { cn } from '@/src/lib/utils';
@@ -12,7 +12,6 @@ import { cn } from '@/src/lib/utils';
 export default function RouteDetail() {
   const { id } = useParams<{ id: string }>();
   const [weather, setWeather] = useState<any>(null);
-  const [status, setStatus] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // 登山計畫書內嵌區塊：就地展開，並依 iframe 內容自動撐高（與本站同源）
@@ -66,11 +65,10 @@ export default function RouteDetail() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        // 並行獲取天氣與狀態
-        const [weatherData, statusData] = await Promise.all([
-          route.lat && route.lng ? MountainService.getRealtimeWeather(route.lat, route.lng) : null,
-          MountainService.getHikingStatus(route.title)
-        ]);
+        // 獲取即時天氣
+        const weatherData = route.lat && route.lng
+          ? await MountainService.getRealtimeWeather(route.lat, route.lng)
+          : null;
 
         if (weatherData) {
           const icons: Record<number, any> = {
@@ -87,8 +85,6 @@ export default function RouteDetail() {
             icon: icons[weatherData.code] || <Cloud size={24} />
           });
         }
-
-        setStatus(statusData);
       } catch (error) {
         console.error('Error fetching real-time data:', error);
       } finally {
@@ -185,7 +181,16 @@ export default function RouteDetail() {
 
           {/* 建議行程 */}
           <div>
-            <h3 className="text-3xl font-serif font-bold text-primary mb-8 border-l-4 border-accent pl-6">建議行程 Itinerary</h3>
+            <div className="flex items-center justify-between gap-4 mb-8">
+              <h3 className="text-3xl font-serif font-bold text-primary border-l-4 border-accent pl-6">建議行程 Itinerary</h3>
+              <button
+                type="button"
+                onClick={openPlan}
+                className="flex-none inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg text-sm font-bold tracking-wide hover:bg-accent transition-colors"
+              >
+                <FileText size={16} /> 登山計畫書
+              </button>
+            </div>
             <div className="space-y-6 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-border">
               {route.itinerary?.map((item, idx) => (
                 <div key={idx} className="flex gap-6 relative">
@@ -198,36 +203,23 @@ export default function RouteDetail() {
             </div>
           </div>
 
-          {/* AI 即時狀態分析 */}
-          {status && (
-            <div className="bg-accent/5 p-10 rounded-2xl border border-accent/20">
-              <div className="flex items-center gap-3 mb-6">
-                <Newspaper className="text-accent" size={28} />
-                <h3 className="text-2xl font-serif font-bold text-primary">AI 即時狀態分析</h3>
-              </div>
-              <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <span className={cn(
-                    "px-4 py-1.5 rounded-full text-sm font-bold",
-                    status.status?.includes('開放') ? "bg-emerald-500 text-white" : "bg-red-500 text-white"
-                  )}>
-                    {status.status || '未知'}
-                  </span>
-                  <span className="text-text-muted text-sm">資料來源：Gemini AI 即時檢索</span>
-                </div>
-                <div className="bg-white/50 p-6 rounded-xl">
-                  <h4 className="font-bold text-primary mb-2 flex items-center gap-2">
-                    <AlertTriangle size={18} className="text-accent" /> 最新公告 / 況狀
-                  </h4>
-                  <p className="text-text-muted text-sm leading-relaxed">{status.notice}</p>
-                </div>
-                <div className="bg-white/50 p-6 rounded-xl">
-                  <h4 className="font-bold text-primary mb-2">登山建議</h4>
-                  <p className="text-text-muted text-sm leading-relaxed">{status.advice}</p>
-                </div>
-              </div>
+          {/* 登山計畫書（取代原 AI 即時狀態分析） */}
+          <button
+            type="button"
+            onClick={openPlan}
+            className="group block w-full text-left bg-accent/5 p-10 rounded-2xl border border-accent/20 hover:bg-accent/10 hover:border-accent/40 transition-colors"
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <FileText className="text-accent" size={28} />
+              <h3 className="text-2xl font-serif font-bold text-primary">登山計畫書</h3>
             </div>
-          )}
+            <p className="text-text-muted leading-relaxed mb-5">
+              依本行程線上撰寫登山計畫書，填寫隊員名單、每日行程、緊急聯絡與留守人資訊，完成後可直接列印或輸出 PDF，作為入山／入園申請附件。
+            </p>
+            <span className="inline-flex items-center gap-2 text-sm font-bold tracking-widest uppercase text-primary group-hover:text-accent transition-colors">
+              開始撰寫 <ArrowRight size={16} />
+            </span>
+          </button>
 
           {/* 專屬裝備建議：依路線海拔/天數/季節動態組合 */}
           {(() => {
