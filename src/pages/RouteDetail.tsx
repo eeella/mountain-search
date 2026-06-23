@@ -190,43 +190,28 @@ export default function RouteDetail() {
             </div>
           </div>
 
-          {/* 登山計畫書（取代原 AI 即時狀態分析）：點選後於下方就地展開，預設收合 */}
-          <div className="bg-accent/5 rounded-2xl border border-accent/20 overflow-hidden">
-            <button
-              type="button"
-              onClick={() => setShowPlan(v => !v)}
-              aria-expanded={showPlan}
-              className="group block w-full text-left p-10 hover:bg-accent/5 transition-colors"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <FileText className="text-accent" size={28} />
-                <h3 className="text-2xl font-serif font-bold text-primary">登山計畫書</h3>
+          {/* 登山計畫書：由「建議行程」標題旁按鈕切換，展開時於此就地顯示工具本體（預設收合） */}
+          {showPlan && (
+            <div>
+              <div className="flex justify-end mb-3">
+                <button
+                  type="button"
+                  onClick={() => setShowPlan(false)}
+                  className="inline-flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase text-text-muted hover:text-accent border border-border hover:border-accent rounded-md px-4 py-2 transition-colors"
+                >
+                  收合計畫書 <ChevronDown size={14} className="rotate-180" />
+                </button>
               </div>
-              <p className="text-text-muted leading-relaxed mb-5">
-                依本行程線上撰寫登山計畫書，填寫隊員名單、每日行程、緊急聯絡與留守人資訊，完成後可直接列印或輸出 PDF，作為入山／入園申請附件。
-              </p>
-              <span className="inline-flex items-center gap-2 text-sm font-bold tracking-widest uppercase text-primary group-hover:text-accent transition-colors">
-                {showPlan ? '收合' : '開始撰寫'}
-                <ChevronDown size={16} className={cn('transition-transform', showPlan && 'rotate-180')} />
-              </span>
-            </button>
-
-            {/* 內嵌工具：僅在展開時載入，iframe 同源自動撐高 */}
-            {showPlan && (
-              <div className="px-4 pb-4 md:px-6 md:pb-6">
-                <div className="rounded-xl overflow-hidden border border-border bg-white shadow-sm">
-                  <iframe
-                    ref={planIframeRef}
-                    onLoad={handlePlanLoad}
-                    src={`${import.meta.env.BASE_URL}hiking-plan/index.html`}
-                    title="登山計畫書"
-                    className="w-full block border-0"
-                    style={{ height: planHeight }}
-                  />
-                </div>
-              </div>
-            )}
-          </div>
+              <iframe
+                ref={planIframeRef}
+                onLoad={handlePlanLoad}
+                src={`${import.meta.env.BASE_URL}hiking-plan/index.html`}
+                title="登山計畫書"
+                className="w-full block border-0"
+                style={{ height: planHeight }}
+              />
+            </div>
+          )}
 
           {/* 專屬裝備建議：依路線海拔/天數/季節動態組合 */}
           {(() => {
