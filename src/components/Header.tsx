@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
+import logoUrl from '@/logo.svg';
 
 /**
  * 頂部導覽列組件，包含 Logo、導覽連結與登入按鈕
@@ -56,13 +57,11 @@ export default function Header() {
 
         {/* Logo 區域 */}
         <Link to="/" className="flex items-center gap-3.5 group">
-          <svg className="w-11 h-11 transition-transform duration-500 group-hover:rotate-12" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="20" cy="20" r="19" fill="#1B2B23"/>
-            <path d="M10 30L20 12L30 30H10Z" fill="white"/>
-            <path d="M16 30L23 18L30 30H16Z" fill="#E87132"/>
-            <circle cx="28" cy="14" r="5" stroke="white" strokeWidth="2.5"/>
-            <path d="M31.5 17.5L34 20" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
-          </svg>
+          <img
+            src={logoUrl}
+            alt="登山搜一下"
+            className="w-11 h-11 transition-transform duration-500 group-hover:rotate-12"
+          />
           <span className={cn(
             "text-xl font-extrabold tracking-widest uppercase hidden sm:block transition-colors",
             (scrolled || !isHomePage) ? "text-primary" : "text-white"
