@@ -190,16 +190,24 @@ export default function RouteDetail() {
             </div>
           </div>
 
-          {/* 登山計畫書：由「建議行程」標題旁按鈕切換，展開時於此就地顯示工具本體（預設收合） */}
+          {/* 登山計畫書：由「建議行程」標題旁按鈕切換，展開時就地顯示（標題列參考「專屬裝備清單」精簡呈現） */}
           {showPlan && (
-            <div>
-              <div className="flex justify-end mb-3">
+            <div className="rounded-2xl overflow-hidden">
+              {/* 深綠標題列（精簡版：標題 + 一行說明 + 收合） */}
+              <div className="bg-primary px-6 md:px-8 py-5 text-white flex items-center justify-between flex-wrap gap-3">
+                <div className="flex items-center gap-3">
+                  <FileText size={24} className="text-accent flex-none" />
+                  <div>
+                    <h3 className="text-2xl md:text-3xl font-serif font-bold leading-tight">登山計畫書</h3>
+                    <p className="text-white/50 text-[0.7rem] tracking-widest uppercase mt-0.5">填寫後可輸出 PDF · 入山／入園申請附件</p>
+                  </div>
+                </div>
                 <button
                   type="button"
                   onClick={() => setShowPlan(false)}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase text-text-muted hover:text-accent border border-border hover:border-accent rounded-md px-4 py-2 transition-colors"
+                  className="flex-none inline-flex items-center gap-1.5 text-[0.7rem] font-bold tracking-widest uppercase text-white/60 hover:text-accent transition-colors"
                 >
-                  收合計畫書 <ChevronDown size={14} className="rotate-180" />
+                  收合 <ChevronDown size={14} className="rotate-180" />
                 </button>
               </div>
               <iframe
