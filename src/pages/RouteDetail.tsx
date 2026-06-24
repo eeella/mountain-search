@@ -193,7 +193,7 @@ export default function RouteDetail() {
           {/* 登山計畫書：由「建議行程」標題旁按鈕切換。展開時直接顯示工具本體，
               其自身的深色工具列即為唯一標頭（書名／檔案大小／按鈕／操作說明全在同一條） */}
           {showPlan && (
-            <div className="rounded-2xl overflow-hidden">
+            <div className="rounded-2xl overflow-hidden border border-border shadow-sm">
               <iframe
                 ref={planIframeRef}
                 onLoad={handlePlanLoad}
