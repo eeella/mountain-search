@@ -162,7 +162,6 @@
     .page{margin:0;padding:0 28px 38px;}
     .cover h1{font-size:34px;letter-spacing:2px;}
     .field-row{grid-template-columns:108px 1fr;}
-    #memberList.cols-2{grid-template-columns:1fr;} /* 四欄在窄螢幕自動收成單欄 */
   }
   /* 手機 */
   @media (max-width: 520px){
@@ -173,6 +172,7 @@
     .page{margin:0;padding:0 18px 26px;}
     .cover h1{font-size:27px;letter-spacing:1px;}
     .section-title{font-size:20px;}
+    #memberList.cols-2{grid-template-columns:1fr;} /* 四欄（兩人一列）在手機才收成單欄 */
     .field-row{grid-template-columns:1fr;gap:2px 0;}
     .field-row .label{font-size:15px;color:var(--accent);}
     .day{grid-template-columns:54px 1fr 30px;gap:8px;}
